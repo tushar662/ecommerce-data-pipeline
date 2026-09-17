@@ -1,15 +1,18 @@
 import pandas as pd
 
-file_path = "data/raw/olist_orders_dataset.csv"
+RAW_FILE = "data/raw/olist_orders_dataset.csv"
+SAMPLE_FILE = "data/sample/orders_sample.csv"
 
-orders = pd.read_csv(file_path)
+orders = pd.read_csv(RAW_FILE)
 
 print("Orders dataset loaded successfully!")
-print("Rows:", len(orders))
-print("Columns:", len(orders.columns))
+print("Total rows:", len(orders))
+print("Total columns:", len(orders.columns))
 
-print("\nColumn names:")
-print(orders.columns.tolist())
+sample = orders.head(1000)
 
-print("\nFirst 5 rows:")
-print(orders.head())
+sample.to_csv(SAMPLE_FILE, index=False)
+
+print("Sample dataset created successfully!")
+print("Sample rows:", len(sample))
+print("Sample file:", SAMPLE_FILE)

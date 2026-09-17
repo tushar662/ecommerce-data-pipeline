@@ -2,10 +2,18 @@ pipeline {
     agent any
 
     stages {
-        stage('Run Python') {
+
+        stage('Install Dependencies') {
             steps {
-                bat 'python main.py'
+                bat 'python -m pip install -r requirements.txt'
             }
         }
+
+        stage('Extract Data') {
+            steps {
+                bat 'python src/extract.py'
+            }
+        }
+
     }
 }

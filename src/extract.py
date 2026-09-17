@@ -1,6 +1,6 @@
 import pandas as pd
 
-file_path = "data/olist_orders_dataset.csv"
+file_path = "data/raw/olist_orders_dataset.csv"
 
 orders = pd.read_csv(file_path)
 

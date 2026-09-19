@@ -9,9 +9,9 @@ pipeline {
             }
         }
 
-        stage('Extract Data') {
+        stage('Run Pipeline') {
             steps {
-                bat 'python src/extract.py'
+                bat 'python main.py'
             }
         }
 

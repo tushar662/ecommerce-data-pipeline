@@ -1,19 +1,36 @@
-import pandas as pd
 import os
+import pandas as pd
+
 
 RAW_FILE = "data/raw/olist_orders_dataset.csv"
 SAMPLE_FILE = "data/sample/orders_sample.csv"
 
-if os.path.exists(RAW_FILE):
-    input_file = RAW_FILE
-    print("Running with full raw dataset...")
-else:
-    input_file = SAMPLE_FILE
-    print("Raw dataset not found. Running with sample dataset...")
 
-orders = pd.read_csv(input_file)
+def load_orders():
+    """
+    Load the Olist orders dataset.
 
-print("Orders dataset loaded successfully!")
-print("Input file:", input_file)
-print("Total rows:", len(orders))
-print("Total columns:", len(orders.columns))
+    Uses the full dataset when available.
+    Otherwise, uses the sample dataset for CI/testing.
+    """
+
+    if os.path.exists(RAW_FILE):
+        input_file = RAW_FILE
+        print("Using full raw dataset.")
+    else:
+        input_file = SAMPLE_FILE
+        print("Full dataset not found. Using sample dataset.")
+
+    orders = pd.read_csv(input_file)
+
+    print(f"Loaded: {input_file}")
+    print(f"Rows: {len(orders)}")
+    print(f"Columns: {len(orders.columns)}")
+
+    return orders
+
+
+if __name__ == "__main__":
+    orders = load_orders()
+
+    print("\nOrders dataset loaded successfully.")

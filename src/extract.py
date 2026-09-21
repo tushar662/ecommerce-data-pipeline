@@ -6,17 +6,22 @@ RAW_FILE = "data/raw/olist_orders_dataset.csv"
 SAMPLE_FILE = "data/sample/orders_sample.csv"
 
 
-def load_orders():
+def load_orders(use_sample=False):
     """
     Load the Olist orders dataset.
 
-    Uses the full dataset when available.
-    Otherwise, uses the sample dataset for CI/testing.
+    Uses the sample dataset when use_sample=True.
+    Otherwise, uses the full dataset when available.
     """
 
-    if os.path.exists(RAW_FILE):
+    if use_sample:
+        input_file = SAMPLE_FILE
+        print("Using sample dataset.")
+
+    elif os.path.exists(RAW_FILE):
         input_file = RAW_FILE
         print("Using full raw dataset.")
+
     else:
         input_file = SAMPLE_FILE
         print("Full dataset not found. Using sample dataset.")

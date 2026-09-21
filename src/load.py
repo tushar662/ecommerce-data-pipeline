@@ -1,3 +1,4 @@
+import os
 import psycopg
 
 
@@ -8,7 +9,7 @@ def connect_database():
         port=5433,
         dbname="ecommerce_db",
         user="postgres",
-        password="***REMOVED***"
+        password=os.getenv("POSTGRES_PASSWORD")
     )
 
     print("PostgreSQL connection successful!")

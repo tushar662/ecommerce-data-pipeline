@@ -23,40 +23,39 @@ def load_orders(orders):
 
     print(f"Loading {len(orders)} rows into PostgreSQL...")
 
-    for _, row in orders.iterrows():
-
-        cursor.execute(
-            """
-            INSERT INTO orders (
-                order_id,
-                customer_id,
-                order_status,
-                order_purchase_timestamp,
-                order_approved_at,
-                order_delivered_carrier_date,
-                order_delivered_customer_date,
-                order_estimated_delivery_date,
-                purchase_date,
-                purchase_year,
-                purchase_month,
-                purchase_day,
-                purchase_weekday,
-                delivery_days,
-                delivery_date_missing,
-                days_late,
-                delivery_status
-            )
-            VALUES (
-                %s, %s, %s, %s, %s, %s, %s, %s, %s,
-                %s, %s, %s, %s, %s, %s, %s, %s
-            )
-            """,
-            tuple(row)
+    insert_query = """
+        INSERT INTO orders (
+            order_id,
+            customer_id,
+            order_status,
+            order_purchase_timestamp,
+            order_approved_at,
+            order_delivered_carrier_date,
+            order_delivered_customer_date,
+            order_estimated_delivery_date,
+            purchase_date,
+            purchase_year,
+            purchase_month,
+            purchase_day,
+            purchase_weekday,
+            delivery_days,
+            delivery_date_missing,
+            days_late,
+            delivery_status
         )
+        VALUES (
+            %s, %s, %s, %s, %s, %s, %s, %s, %s,
+            %s, %s, %s, %s, %s, %s, %s, %s
+        )
+    """
+
+    rows = [tuple(row) for _, row in orders.iterrows()]
+
+    cursor.executemany(insert_query, rows)
 
     connection.commit()
 
-    print(f"Successfully loaded {len(orders)} rows.")
+    print(f"Successfully loaded {len(rows)} rows.")
 
     cursor.close()
     connection.close()

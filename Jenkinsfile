@@ -11,7 +11,15 @@ pipeline {
 
         stage('Run Pipeline') {
             steps {
-                bat 'python main.py'
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'postgres-db',
+                        usernameVariable: 'POSTGRES_USER',
+                        passwordVariable: 'POSTGRES_PASSWORD'
+                    )
+                ]) {
+                    bat 'python main.py'
+                }
             }
         }
 

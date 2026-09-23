@@ -48,6 +48,22 @@ def load_orders(orders):
             %s, %s, %s, %s, %s, %s, %s, %s, %s,
             %s, %s, %s, %s, %s, %s, %s, %s
         )
+        ON CONFLICT (order_id)
+        DO UPDATE SET
+            order_status = EXCLUDED.order_status,
+            order_approved_at = EXCLUDED.order_approved_at,
+            order_delivered_carrier_date = EXCLUDED.order_delivered_carrier_date,
+            order_delivered_customer_date = EXCLUDED.order_delivered_customer_date,
+            order_estimated_delivery_date = EXCLUDED.order_estimated_delivery_date,
+            purchase_date = EXCLUDED.purchase_date,
+            purchase_year = EXCLUDED.purchase_year,
+            purchase_month = EXCLUDED.purchase_month,
+            purchase_day = EXCLUDED.purchase_day,
+            purchase_weekday = EXCLUDED.purchase_weekday,
+            delivery_days = EXCLUDED.delivery_days,
+            delivery_date_missing = EXCLUDED.delivery_date_missing,
+            days_late = EXCLUDED.days_late,
+            delivery_status = EXCLUDED.delivery_status
     """
 
     rows = [tuple(row) for _, row in orders.iterrows()]

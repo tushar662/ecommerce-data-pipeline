@@ -1,4 +1,8 @@
-print("Ecommerce Data Pipeline Started")
+from src.logger import get_logger
+
+logger = get_logger()
+
+logger.info("Ecommerce Data Pipeline Started")
 
 
 from src.extract import load_orders as extract_orders
@@ -10,26 +14,43 @@ from src.load import load_orders as load_to_database
 
 def main():
 
-    print("\nStarting pipeline...")
+    try:
 
-    # Step 1: Extract
-    orders = extract_orders(use_sample=True)
+        logger.info("Starting pipeline")
 
-    # Step 2: Transform dates
-    orders = transform_dates(orders)
+        # Step 1: Extract
+        logger.info("Starting extraction")
+        orders = extract_orders(use_sample=True)
+        logger.info("Extraction completed")
 
-    # Step 3: Transform orders
-    orders = transform_orders(orders)
+        # Step 2: Transform dates
+        logger.info("Starting date transformation")
+        orders = transform_dates(orders)
+        logger.info("Date transformation completed")
 
-    # Step 4: Transform delivery
-    orders = transform_delivery(orders)
+        # Step 3: Transform orders
+        logger.info("Starting order transformation")
+        orders = transform_orders(orders)
+        logger.info("Order transformation completed")
 
-    # Step 5: Load into PostgreSQL
-    load_to_database(orders)
+        # Step 4: Transform delivery
+        logger.info("Starting delivery transformation")
+        orders = transform_delivery(orders)
+        logger.info("Delivery transformation completed")
 
-    print("\nPipeline completed successfully.")
-    print("Final rows:", len(orders))
-    print("Final columns:", len(orders.columns))
+        # Step 5: Load into PostgreSQL
+        logger.info("Starting database load")
+        load_to_database(orders)
+        logger.info("Database load completed")
+
+        logger.info("Pipeline completed successfully")
+        logger.info(f"Final rows: {len(orders)}")
+        logger.info(f"Final columns: {len(orders.columns)}")
+
+    except Exception:
+        logger.exception("Pipeline failed")
+        raise
+
 
 if __name__ == "__main__":
     main()
